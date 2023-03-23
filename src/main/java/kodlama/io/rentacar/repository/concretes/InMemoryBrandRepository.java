@@ -38,7 +38,8 @@ public class InMemoryBrandRepository implements BrandRepository {
 
     @Override
     public Brand update(int id, Brand brand) {
-        return brands.set(id - 1, brand);
+        brands.set(id - 1, brand);
+        return brand;
     }
 
     @Override
