@@ -1,20 +1,18 @@
 package kodlama.io.rentacar.api.controllers;
 
 import kodlama.io.rentacar.business.abstracts.BrandService;
-import kodlama.io.rentacar.entities.concretes.Brand;
+import kodlama.io.rentacar.entities.Brand;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/brands")
 public class BrandsController {
     private final BrandService service;
-
-    public BrandsController(BrandService service) {
-        this.service = service;
-    }
 
     @GetMapping
     public List<Brand> getAll() {

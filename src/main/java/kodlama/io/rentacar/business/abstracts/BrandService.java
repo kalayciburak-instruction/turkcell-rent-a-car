@@ -1,10 +1,11 @@
 package kodlama.io.rentacar.business.abstracts;
 
-import kodlama.io.rentacar.entities.concretes.Brand;
+import kodlama.io.rentacar.entities.Brand;
 
 import java.util.List;
 
 public interface BrandService {
+    // CRUD operations
     List<Brand> getAll();
     Brand getById(int id);
     Brand add(Brand brand);
