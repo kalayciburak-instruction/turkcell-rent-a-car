@@ -1,4 +1,4 @@
-package kodlama.io.rentacar.business.dto.responses.get;
+package kodlama.io.rentacar.business.dto.responses.update;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetAllBrandsResponse {
+public class UpdateModelResponse {
     private int id;
+    private int brandId;
     private String name;
-//    private List<GetAllModelsResponse> models;
 }

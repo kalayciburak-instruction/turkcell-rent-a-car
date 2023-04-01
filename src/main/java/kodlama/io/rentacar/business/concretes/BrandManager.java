@@ -2,9 +2,11 @@ package kodlama.io.rentacar.business.concretes;
 
 import kodlama.io.rentacar.business.abstracts.BrandService;
 import kodlama.io.rentacar.business.dto.requests.create.CreateBrandRequest;
+import kodlama.io.rentacar.business.dto.requests.update.UpdateBrandRequest;
 import kodlama.io.rentacar.business.dto.responses.create.CreateBrandResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllBrandsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetBrandResponse;
+import kodlama.io.rentacar.business.dto.responses.update.UpdateBrandResponse;
 import kodlama.io.rentacar.entities.Brand;
 import kodlama.io.rentacar.repository.BrandRepository;
 import lombok.AllArgsConstructor;
@@ -32,7 +34,7 @@ public class BrandManager implements BrandService {
 
     @Override
     public GetBrandResponse getById(int id) {
-        checkIfBrandExists(id);
+        checkIfBrandExistsById(id);
         Brand brand = repository.findById(id).orElseThrow();
         GetBrandResponse response = mapper.map(brand, GetBrandResponse.class);
 
@@ -41,6 +43,7 @@ public class BrandManager implements BrandService {
 
     @Override
     public CreateBrandResponse add(CreateBrandRequest request) {
+        checkIfBrandExistsByName(request.getName());
         Brand brand = mapper.map(request, Brand.class);
         brand.setId(0);
         repository.save(brand);
@@ -50,21 +53,31 @@ public class BrandManager implements BrandService {
     }
 
     @Override
-    public Brand update(int id, Brand brand) {
-        checkIfBrandExists(id);
+    public UpdateBrandResponse update(int id, UpdateBrandRequest request) {
+        checkIfBrandExistsById(id);
+        Brand brand = mapper.map(request, Brand.class);
         brand.setId(id);
-        return repository.save(brand);
+        repository.save(brand);
+        UpdateBrandResponse response = mapper.map(brand, UpdateBrandResponse.class);
+
+        return response;
     }
 
     @Override
     public void delete(int id) {
-        checkIfBrandExists(id);
+        checkIfBrandExistsById(id);
         repository.deleteById(id);
     }
 
     // Business rules
 
-    private void checkIfBrandExists(int id) {
+    private void checkIfBrandExistsById(int id) {
         if (!repository.existsById(id)) throw new RuntimeException("Böyle bir marka mevcut değil.");
+    }
+
+    private void checkIfBrandExistsByName(String name) {
+        if (repository.existsByNameIgnoreCase(name)) {
+            throw new RuntimeException("Böyle bir marka sistemde kayıtlı!");
+        }
     }
 }
