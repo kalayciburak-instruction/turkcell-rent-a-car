@@ -1,5 +1,6 @@
 package kodlama.io.rentacar.business.rules;
 
+import kodlama.io.rentacar.common.constants.Messages;
 import kodlama.io.rentacar.core.exceptions.BusinessException;
 import kodlama.io.rentacar.entities.enums.State;
 import kodlama.io.rentacar.repository.MaintenanceRepository;
@@ -13,25 +14,25 @@ public class MaintenanceBusinessRules {
 
     public void checkIfMaintenanceExists(int id) {
         if (!repository.existsById(id)) {
-            throw new BusinessException("Böyle bir bakım bilgisine ulaşılamadı!");
+            throw new BusinessException(Messages.Maintenance.NotExists);
         }
     }
 
     public void checkIfCarIsNotUnderMaintenance(int carId) {
         if (!repository.existsByCarIdAndIsCompletedIsFalse(carId)) {
-            throw new BusinessException("Bakımda böyle bir araç bulunamadı!");
+            throw new BusinessException(Messages.Maintenance.CarNotExists);
         }
     }
 
     public void checkIfCarUnderMaintenance(int carId) {
         if (repository.existsByCarIdAndIsCompletedIsFalse(carId)) {
-            throw new BusinessException("Araç şuanda bakımda!");
+            throw new BusinessException(Messages.Maintenance.CarExists);
         }
     }
 
     public void checkCarAvailabilityForMaintenance(State state) {
         if (state.equals(State.RENTED)) {
-            throw new BusinessException("Araç kirada olduğu için bakıma alınamaz!");
+            throw new BusinessException(Messages.Maintenance.CarIsRented);
         }
     }
 }

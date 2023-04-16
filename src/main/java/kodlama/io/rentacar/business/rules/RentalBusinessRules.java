@@ -1,5 +1,6 @@
 package kodlama.io.rentacar.business.rules;
 
+import kodlama.io.rentacar.common.constants.Messages;
 import kodlama.io.rentacar.core.exceptions.BusinessException;
 import kodlama.io.rentacar.entities.enums.State;
 import kodlama.io.rentacar.repository.RentalRepository;
@@ -13,13 +14,13 @@ public class RentalBusinessRules {
 
     public void checkIfRentalExists(int id) {
         if (!repository.existsById(id)) {
-            throw new BusinessException("Kiralama bilgisine ulaşılamadı.");
+            throw new BusinessException(Messages.Rental.NotExists);
         }
     }
 
     public void checkIfCarAvailable(State state) {
         if (!state.equals(State.AVAILABLE)) {
-            throw new BusinessException("Araç müsait değil.");
+            throw new BusinessException(Messages.Car.NotAvailable);
         }
     }
 }

@@ -1,6 +1,7 @@
 package kodlama.io.rentacar.business.rules;
 
 import kodlama.io.rentacar.business.dto.requests.create.CreatePaymentRequest;
+import kodlama.io.rentacar.common.constants.Messages;
 import kodlama.io.rentacar.common.dto.CreateRentalPaymentRequest;
 import kodlama.io.rentacar.core.exceptions.BusinessException;
 import kodlama.io.rentacar.repository.PaymentRepository;
@@ -14,19 +15,19 @@ public class PaymentBusinessRules {
 
     public void checkIfPaymentExists(int id) {
         if (!repository.existsById(id)) {
-            throw new BusinessException("Ödeme bilgisi bulunamadı.");
+            throw new BusinessException(Messages.Payment.NotFound);
         }
     }
 
     public void checkIfBalanceIsEnough(double price, double balance) {
         if (balance < price) {
-            throw new BusinessException("Yetersiz bakiye.");
+            throw new BusinessException(Messages.Payment.NotEnoughMoney);
         }
     }
 
     public void checkIfCardExists(CreatePaymentRequest request) {
         if (repository.existsByCardNumber(request.getCardNumber())) {
-            throw new BusinessException("Kart numarası zaten kayıtlı.");
+            throw new BusinessException(Messages.Payment.CardNumberAlreadyExists);
         }
     }
 
@@ -38,7 +39,7 @@ public class PaymentBusinessRules {
                 request.getCardExpirationMonth(),
                 request.getCardCvv()
         )) {
-            throw new BusinessException("Kart bilgileriniz hatalı.");
+            throw new BusinessException(Messages.Payment.NotAValidPayment);
         }
     }
 }

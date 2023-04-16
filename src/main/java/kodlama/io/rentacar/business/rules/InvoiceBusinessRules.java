@@ -1,5 +1,6 @@
 package kodlama.io.rentacar.business.rules;
 
+import kodlama.io.rentacar.common.constants.Messages;
 import kodlama.io.rentacar.core.exceptions.BusinessException;
 import kodlama.io.rentacar.repository.InvoiceRepository;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ public class InvoiceBusinessRules {
 
     public void checkIfInvoiceExists(int id) {
         if (!repository.existsById(id)) {
-            throw new BusinessException("Fatura bilgisi bulunamadı.");
+            throw new BusinessException(Messages.Invoice.NotFound);
         }
     }
 }
