@@ -7,6 +7,7 @@ import kodlama.io.rentacar.business.dto.responses.create.CreateModelResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllModelsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetModelResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateModelResponse;
+import kodlama.io.rentacar.business.rules.ModelBusinessRules;
 import kodlama.io.rentacar.entities.Model;
 import kodlama.io.rentacar.repository.ModelRepository;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.List;
 public class ModelManager implements ModelService {
     private final ModelRepository repository;
     private final ModelMapper mapper;
+    private final ModelBusinessRules rules;
 
     @Override
     public List<GetAllModelsResponse> getAll() {
@@ -34,7 +36,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public GetModelResponse getById(int id) {
-        checkIfModelExistsById(id);
+        rules.checkIfModelExistsById(id);
         Model model = repository.findById(id).orElseThrow();
         GetModelResponse response = mapper.map(model, GetModelResponse.class);
 
@@ -43,7 +45,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public CreateModelResponse add(CreateModelRequest request) {
-        checkIfModelExistsByName(request.getName());
+        rules.checkIfModelExistsByName(request.getName());
         Model model = mapper.map(request, Model.class);
         model.setId(0);
         repository.save(model);
@@ -54,7 +56,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public UpdateModelResponse update(int id, UpdateModelRequest request) {
-        checkIfModelExistsById(id);
+        rules.checkIfModelExistsById(id);
         Model model = mapper.map(request, Model.class);
         model.setId(id);
         repository.save(model);
@@ -65,19 +67,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public void delete(int id) {
-        checkIfModelExistsById(id);
+        rules.checkIfModelExistsById(id);
         repository.deleteById(id);
-    }
-
-    private void checkIfModelExistsById(int id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Böyle bir model mevcut değil.");
-        }
-    }
-
-    private void checkIfModelExistsByName(String name) {
-        if (repository.existsByNameIgnoreCase(name)) {
-            throw new RuntimeException("Böyle bir model sistemde kayıtlı!");
-        }
     }
 }
