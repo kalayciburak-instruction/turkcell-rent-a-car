@@ -18,7 +18,6 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int carId;
     private String cardHolder;
     private String modelName;
     private String brandName;

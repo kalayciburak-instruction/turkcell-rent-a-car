@@ -8,13 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateInvoiceRequest {
-    @NotNull
-    private int carId;
     @NotBlank
     private String cardHolder;
     @NotBlank
@@ -32,4 +32,5 @@ public class CreateInvoiceRequest {
     @NotNull
     @Min(0)
     private int rentedForDays;
+    private LocalDateTime rentedAt;
 }

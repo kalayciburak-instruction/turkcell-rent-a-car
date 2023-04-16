@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,7 +45,6 @@ public class InvoiceManager implements InvoiceService {
     public CreateInvoiceResponse add(CreateInvoiceRequest request) {
         Invoice invoice = mapper.map(request, Invoice.class);
         invoice.setId(0);
-        invoice.setRentedAt(LocalDateTime.now());
         invoice.setTotalPrice(getTotalPrice(invoice));
         repository.save(invoice);
         CreateInvoiceResponse response = mapper.map(invoice, CreateInvoiceResponse.class);

@@ -73,8 +73,10 @@ public class RentalManager implements RentalService {
         CreateRentalResponse response = mapper.map(rental, CreateRentalResponse.class);
 
         // Create Invoice
+        // Car car = mapper.map(carService.getById(request.getCarId()), Car.class);
+        // rental.setCar(car);
         CreateInvoiceRequest invoiceRequest = new CreateInvoiceRequest();
-        createInvoiceRequest(request, invoiceRequest);
+        createInvoiceRequest(request, invoiceRequest, rental);
         invoiceService.add(invoiceRequest);
 
         return response;
@@ -104,10 +106,10 @@ public class RentalManager implements RentalService {
         return rental.getDailyPrice() * rental.getRentedForDays();
     }
 
-    private void createInvoiceRequest(CreateRentalRequest request, CreateInvoiceRequest invoiceRequest) {
+    private void createInvoiceRequest(CreateRentalRequest request, CreateInvoiceRequest invoiceRequest, Rental rental) {
         GetCarResponse car = carService.getById(request.getCarId());
 
-        invoiceRequest.setCarId(request.getCarId());
+        invoiceRequest.setRentedAt(rental.getStartDate());
         invoiceRequest.setModelName(car.getModelName());
         invoiceRequest.setBrandName(car.getModelBrandName());
         invoiceRequest.setDailyPrice(request.getDailyPrice());
