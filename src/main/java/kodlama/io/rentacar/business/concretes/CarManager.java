@@ -27,10 +27,7 @@ public class CarManager implements CarService {
     @Override
     public List<GetAllCarsResponse> getAll(boolean includeMaintenance) {
         List<Car> cars = filterCarsByMaintenanceState(includeMaintenance);
-        List<GetAllCarsResponse> response = cars
-                .stream()
-                .map(car -> mapper.map(car, GetAllCarsResponse.class))
-                .toList();
+        List<GetAllCarsResponse> response = cars.stream().map(car -> mapper.map(car, GetAllCarsResponse.class)).toList();
 
         return response;
     }
@@ -47,6 +44,7 @@ public class CarManager implements CarService {
 
     @Override
     public CreateCarResponse add(CreateCarRequest request) {
+        rules.checkIfCarExistsByPlate(request.getPlate());
         Car car = mapper.map(request, Car.class);
         car.setId(0);
         car.setState(State.AVAILABLE);
