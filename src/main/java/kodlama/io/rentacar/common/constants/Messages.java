@@ -6,6 +6,7 @@ public class Messages {
         public static final String Exists = "CAR_ALREADY_EXISTS";
         public static final String NotAvailable = "CAR_NOT_AVAILABLE";
         public static final String PlateExists = "PLATE_ALREADY_EXISTS";
+        public static final String PlateNotValid = "plate number must match the pattern";
     }
 
     public static class Model {
